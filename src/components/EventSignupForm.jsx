@@ -46,11 +46,17 @@ export default function EventSignupForm({ event }) {
     <form onSubmit={handleSubmit}>
       <label>
         Navn
-        <input value={name} onChange={(inputEvent) => setName(inputEvent.target.value)} />
+        <input
+          required
+          value={name}
+          onChange={(inputEvent) => setName(inputEvent.target.value)}
+        />
       </label>
       <label htmlFor="email">E-mail</label>
       <input
         id="email"
+        type="email"
+        required
         value={email}
         onChange={(inputEvent) => setEmail(inputEvent.target.value)}
         placeholder="dig@example.com"
