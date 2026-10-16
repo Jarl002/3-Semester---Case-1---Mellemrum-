@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
+import NotFoundPage from "./NotFoundPage";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const headers = {
@@ -15,12 +16,32 @@ export default function EventPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [status, setStatus] = useState("loading");
 
   useEffect(() => {
     async function getEvent() {
-      const response = await fetch(`${SUPABASE_URL}/events?id=eq.${eventId}`, { headers });
-      const data = await response.json();
-      setEvent(data[0]);
+      setStatus("loading");
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/events?id=eq.${eventId}`, { headers });
+
+        if (!response.ok) {
+          throw new Error(`Kunne ikke hente event (status ${response.status})`);
+        }
+
+        const data = await response.json();
+
+        if (data.length === 0) {
+          setStatus("not-found");
+          return;
+        }
+
+        setEvent(data[0]);
+        setStatus("success");
+      } catch (error) {
+        console.error("Hentning af event fejlede:", error);
+        setStatus("error");
+      }
     }
 
     getEvent();
@@ -56,8 +77,26 @@ export default function EventPage() {
     }
   }
 
-  if (!event) {
-    return null;
+  if (status === "loading") {
+    return (
+      <main className="event-page">
+        <p className="state-message">Indlæser event...</p>
+      </main>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <main className="event-page">
+        <p className="state-message is-error" role="alert">
+          Vi kunne ikke hente dette event lige nu. Prøv at genindlæse siden.
+        </p>
+      </main>
+    );
+  }
+
+  if (status === "not-found") {
+    return <NotFoundPage />;
   }
 
   const date = new Date(event.date);
