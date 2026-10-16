@@ -1,10 +1,15 @@
 import { Link } from "react-router";
+import usePageFocus from "../hooks/usePageFocus";
 
 export default function NotFoundPage() {
+  const headingRef = usePageFocus("Side ikke fundet");
+
   return (
     <>
       <header>
-        <h1 className="not-found-title">404</h1>
+        <h1 className="not-found-title" ref={headingRef} tabIndex={-1}>
+          404
+        </h1>
       </header>
       <main className="not-found">
         <p>Siden, du leder efter, findes ikke.</p>

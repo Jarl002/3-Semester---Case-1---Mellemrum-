@@ -1,12 +1,17 @@
 import { Link } from "react-router";
+import usePageFocus from "../hooks/usePageFocus";
 
 export default function AboutPage() {
+  const headingRef = usePageFocus("Om Mellemrum");
+
   return (
     <>
       <header className="page-header about-header">
         <div className="about-header-content">
           <p className="eyebrow">Om Mellemrum</p>
-          <h1>Vi skaber mellemrum i kalenderen.</h1>
+          <h1 ref={headingRef} tabIndex={-1}>
+            Vi skaber mellemrum i kalenderen.
+          </h1>
           <p>Udvalgte kulturoplevelser og nye perspektiver på Aarhus.</p>
         </div>
       </header>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import usePageFocus from "../hooks/usePageFocus";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const headers = {
@@ -8,6 +9,7 @@ const headers = {
 };
 
 export default function RegistrationsPage() {
+  const headingRef = usePageFocus("Tilmeldinger");
   const [registrations, setRegistrations] = useState([]);
   const [registrationCount, setRegistrationCount] = useState(0);
   const [status, setStatus] = useState("loading");
@@ -43,7 +45,9 @@ export default function RegistrationsPage() {
     <>
       <header className="admin-header">
         <p className="eyebrow">Internt overblik</p>
-        <h1>Tilmeldinger</h1>
+        <h1 ref={headingRef} tabIndex={-1}>
+          Tilmeldinger
+        </h1>
         <p>{registrationCount} tilmeldinger i alt</p>
       </header>
       <main>

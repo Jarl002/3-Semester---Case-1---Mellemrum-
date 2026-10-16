@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import usePageFocus from "../hooks/usePageFocus";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const headers = {
@@ -8,6 +9,7 @@ const headers = {
 };
 
 export default function HomePage() {
+  const headingRef = usePageFocus("Find plads til noget nyt.");
   const [events, setEvents] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Alle");
@@ -61,7 +63,9 @@ export default function HomePage() {
     <>
       <header className="hero">
         <p className="eyebrow">Kultur i Aarhus</p>
-        <h1>Find plads til noget nyt.</h1>
+        <h1 ref={headingRef} tabIndex={-1}>
+          Find plads til noget nyt.
+        </h1>
         <p className="hero-copy">
           Koncerter, talks og workshops samlet ét sted. Find dit næste event, og tilmeld dig på få minutter.
         </p>
