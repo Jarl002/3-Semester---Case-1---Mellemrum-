@@ -10,16 +10,30 @@ const headers = {
 export default function RegistrationsPage() {
   const [registrations, setRegistrations] = useState([]);
   const [registrationCount, setRegistrationCount] = useState(0);
+  const [status, setStatus] = useState("loading");
 
   useEffect(() => {
     async function getRegistrations() {
-      const response = await fetch(
-        `${SUPABASE_URL}/registrations?select=*,event:events(title,date)&order=createdAt.desc`,
-        { headers }
-      );
-      const data = await response.json();
-      setRegistrations(data);
-      setRegistrationCount(data.length);
+      setStatus("loading");
+
+      try {
+        const response = await fetch(
+          `${SUPABASE_URL}/registrations?select=*,event:events(title,date)&order=createdAt.desc`,
+          { headers }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Kunne ikke hente tilmeldinger (status ${response.status})`);
+        }
+
+        const data = await response.json();
+        setRegistrations(data);
+        setRegistrationCount(data.length);
+        setStatus("success");
+      } catch (error) {
+        console.error("Hentning af tilmeldinger fejlede:", error);
+        setStatus("error");
+      }
     }
 
     getRegistrations();
@@ -33,25 +47,41 @@ export default function RegistrationsPage() {
         <p>{registrationCount} tilmeldinger i alt</p>
       </header>
       <main>
-        <div className="registration-list">
-          <div className="registration-row registration-labels">
-            <span>Navn</span>
-            <span>Event</span>
-            <span>Dato</span>
-            <span>Status</span>
-          </div>
-          {registrations.map((registration) => (
-            <div className="registration-row" key={registration.id}>
-              <div>
-                <strong>{registration.name}</strong>
-                <small>{registration.email}</small>
-              </div>
-              <span>{registration.event?.title ?? "Ukendt event"}</span>
-              <span>{registration.event ? new Date(registration.event.date).toLocaleDateString("da-DK") : "–"}</span>
-              <span className="status">{registration.status}</span>
+        {status === "loading" && <p className="state-message">Indlæser tilmeldinger...</p>}
+
+        {status === "error" && (
+          <p className="state-message is-error" role="alert">
+            Vi kunne ikke hente tilmeldinger lige nu. Prøv at genindlæse siden.
+          </p>
+        )}
+
+        {status === "success" && registrations.length === 0 && (
+          <p className="state-message">Ingen tilmeldinger endnu.</p>
+        )}
+
+        {status === "success" && registrations.length > 0 && (
+          <div className="registration-list">
+            <div className="registration-row registration-labels">
+              <span>Navn</span>
+              <span>Event</span>
+              <span>Dato</span>
+              <span>Status</span>
             </div>
-          ))}
-        </div>
+            {registrations.map((registration) => (
+              <div className="registration-row" key={registration.id}>
+                <div>
+                  <strong>{registration.name}</strong>
+                  <small>{registration.email}</small>
+                </div>
+                <span>{registration.event?.title ?? "Ukendt event"}</span>
+                <span>
+                  {registration.event ? new Date(registration.event.date).toLocaleDateString("da-DK") : "–"}
+                </span>
+                <span className="status">{registration.status}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </main>
       <footer className="site-footer">
         <div className="footer-top">
