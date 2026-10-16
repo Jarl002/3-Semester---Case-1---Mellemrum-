@@ -115,7 +115,7 @@ export default function HomePage() {
           <section className="event-grid">
             {filteredEvents.map((event) => (
               <article className="event-card" key={event.id}>
-                <img src={event.image} alt="" />
+                <img src={event.image} alt={event.title} />
                 <div className="event-card-content">
                   <p className="event-category">{event.category}</p>
                   <h3>{event.title}</h3>
