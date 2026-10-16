@@ -12,6 +12,9 @@ export default function EventPage() {
   const [event, setEvent] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     async function getEvent() {
@@ -25,7 +28,32 @@ export default function EventPage() {
 
   async function handleSubmit(eventSubmit) {
     eventSubmit.preventDefault();
-    console.log({ name, email, event: event.title });
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const response = await fetch(`${SUPABASE_URL}/registrations`, {
+        method: "POST",
+        headers: { ...headers, Prefer: "return=minimal" },
+        body: JSON.stringify({
+          name,
+          email,
+          eventId: event.id,
+          status: "Ny"
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Tilmelding mislykkedes (status ${response.status})`);
+      }
+
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Tilmelding fejlede:", error);
+      setSubmitError("Vi kunne ikke gemme din tilmelding. Prøv venligst igen.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   if (!event) {
@@ -83,19 +111,30 @@ export default function EventPage() {
             <p>Udfyld formularen, så sender vi din tilmelding til arrangøren.</p>
           </div>
 
-          <form onSubmit={handleSubmit}>
-            <label>
-              Navn
-              <input value={name} onChange={(inputEvent) => setName(inputEvent.target.value)} />
-            </label>
-            <span>E-mail</span>
-            <input
-              value={email}
-              onChange={(inputEvent) => setEmail(inputEvent.target.value)}
-              placeholder="dig@example.com"
-            />
-            <button type="submit">Tilmeld mig</button>
-          </form>
+          {isSubmitted ? (
+            <p className="form-message">Tak! Din tilmelding er registreret.</p>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <label>
+                Navn
+                <input value={name} onChange={(inputEvent) => setName(inputEvent.target.value)} />
+              </label>
+              <span>E-mail</span>
+              <input
+                value={email}
+                onChange={(inputEvent) => setEmail(inputEvent.target.value)}
+                placeholder="dig@example.com"
+              />
+              {submitError && (
+                <p role="alert" className="form-message is-error">
+                  {submitError}
+                </p>
+              )}
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Sender..." : "Tilmeld mig"}
+              </button>
+            </form>
+          )}
         </section>
       </main>
       <footer className="site-footer">
