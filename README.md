@@ -111,7 +111,7 @@ Kontrollér, at:
 - du kan åbne en eventside
 - siden `/tilmeldinger` viser de eksisterende tilmeldinger
 
-Tilmeldingsformularen logger foreløbig de indtastede værdier i konsollen. Den gemmer endnu ikke tilmeldingen i Supabase.
+Tilmeldingsformularen gemmer tilmeldingen i Supabase og forbinder den til det valgte event. Du kan se tilmeldingen dukke op på siden `/tilmeldinger` lige efter.
 
 ## 5. Deploy appen
 
