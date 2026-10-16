@@ -21,7 +21,9 @@ export default function EventPage() {
       setStatus("loading");
 
       try {
-        const response = await fetch(`${SUPABASE_URL}/events?id=eq.${eventId}`, { headers });
+        const response = await fetch(`${SUPABASE_URL}/events?id=eq.${eventId}&select=*,venue:venues(*)`, {
+          headers
+        });
 
         if (!response.ok) {
           throw new Error(`Kunne ikke hente event (status ${response.status})`);
@@ -123,13 +125,13 @@ export default function EventPage() {
               <p>
                 <strong>Sted</strong>
                 <span>
-                  {event.venueName}
+                  {event.venue?.name}
                   <br />
-                  {event.venueAddress}, {event.venuePostalCode} {event.venueCity}
-                  {event.venueWebsite && (
+                  {event.venue?.address}, {event.venue?.postalCode} {event.venue?.city}
+                  {event.venue?.website && (
                     <>
                       <br />
-                      <a href={event.venueWebsite}>Besøg venue</a>
+                      <a href={event.venue.website}>Besøg venue</a>
                     </>
                   )}
                 </span>
