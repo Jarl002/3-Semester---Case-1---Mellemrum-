@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import NotFoundPage from "./NotFoundPage";
+import usePageFocus from "../hooks/usePageFocus";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const headers = {
@@ -17,6 +18,7 @@ export default function EventPage() {
   const [submitError, setSubmitError] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [status, setStatus] = useState("loading");
+  const headingRef = usePageFocus(event?.title);
 
   useEffect(() => {
     async function getEvent() {
@@ -112,7 +114,9 @@ export default function EventPage() {
           <img src={event.image} alt={event.title} />
           <div className="event-detail-content">
             <p className="event-category">{event.category}</p>
-            <h1>{event.title}</h1>
+            <h1 ref={headingRef} tabIndex={-1}>
+              {event.title}
+            </h1>
             <p className="lead">{event.summary}</p>
             <div className="detail-list">
               <p>
