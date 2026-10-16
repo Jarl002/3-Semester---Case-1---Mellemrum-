@@ -2,12 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import NotFoundPage from "./NotFoundPage";
 import usePageFocus from "../hooks/usePageFocus";
-
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const headers = {
-  apikey: import.meta.env.VITE_SUPABASE_APIKEY,
-  "Content-Type": "application/json"
-};
+import { SUPABASE_URL, headers } from "../lib/api";
 
 export default function EventPage() {
   const { eventId } = useParams();

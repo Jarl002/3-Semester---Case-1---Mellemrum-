@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import usePageFocus from "../hooks/usePageFocus";
-
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const headers = {
-  apikey: import.meta.env.VITE_SUPABASE_APIKEY,
-  "Content-Type": "application/json"
-};
+import { SUPABASE_URL, headers } from "../lib/api";
 
 export default function RegistrationsPage() {
   const headingRef = usePageFocus("Tilmeldinger");
