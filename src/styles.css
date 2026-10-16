@@ -653,6 +653,20 @@ select:focus {
   font-weight: 700;
 }
 
+.state-message {
+  background: var(--cream);
+  border-radius: 12px;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.state-message.is-error {
+  background: var(--orange);
+  color: white;
+  font-weight: 700;
+}
+
 .admin-header h1 {
   font-size: clamp(3rem, 7vw, 6.5rem);
   letter-spacing: -0.065em;
