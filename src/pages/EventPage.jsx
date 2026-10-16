@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router";
 import NotFoundPage from "./NotFoundPage";
 import usePageFocus from "../hooks/usePageFocus";
 import { SUPABASE_URL, headers } from "../lib/api";
+import { withImageWidth } from "../lib/images";
 import Footer from "../components/Footer";
 
 export default function EventPage() {
@@ -109,7 +110,7 @@ export default function EventPage() {
         </Link>
 
         <section className="event-detail">
-          <img src={event.image} alt={event.title} />
+          <img src={withImageWidth(event.image, 1000, 75)} alt={event.title} />
           <div className="event-detail-content">
             <p className="event-category">{event.category}</p>
             <h1 ref={headingRef} tabIndex={-1}>

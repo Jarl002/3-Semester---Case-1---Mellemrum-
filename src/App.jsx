@@ -1,22 +1,26 @@
+import { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
-import AboutPage from "./pages/AboutPage";
-import EventPage from "./pages/EventPage";
-import RegistrationsPage from "./pages/RegistrationsPage";
-import NotFoundPage from "./pages/NotFoundPage";
+
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const EventPage = lazy(() => import("./pages/EventPage"));
+const RegistrationsPage = lazy(() => import("./pages/RegistrationsPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 export default function App() {
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/events/:eventId" element={<EventPage />} />
-        <Route path="/om" element={<AboutPage />} />
-        <Route path="/tilmeldinger" element={<RegistrationsPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/events/:eventId" element={<EventPage />} />
+          <Route path="/om" element={<AboutPage />} />
+          <Route path="/tilmeldinger" element={<RegistrationsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
     </>
   );
 }
