@@ -16,7 +16,7 @@ export default function RegistrationsPage() {
 
       try {
         const response = await fetch(
-          `${SUPABASE_URL}/registrations?select=*,event:events(title,date)&order=createdAt.desc`,
+          `${SUPABASE_URL}/registrations?select=*,event:events(title)&order=createdAt.desc`,
           { headers }
         );
 
@@ -64,7 +64,7 @@ export default function RegistrationsPage() {
             <div className="registration-row registration-labels">
               <span>Navn</span>
               <span>Event</span>
-              <span>Dato</span>
+              <span>Tilmeldt</span>
               <span>Status</span>
             </div>
             {registrations.map((registration) => (
@@ -74,9 +74,7 @@ export default function RegistrationsPage() {
                   <small>{registration.email}</small>
                 </div>
                 <span>{registration.event?.title ?? "Ukendt event"}</span>
-                <span>
-                  {registration.event ? new Date(registration.event.date).toLocaleDateString("da-DK") : "–"}
-                </span>
+                <span>{new Date(registration.createdAt).toLocaleDateString("da-DK")}</span>
                 <span className="status">{registration.status}</span>
               </div>
             ))}
