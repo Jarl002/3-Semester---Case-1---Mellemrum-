@@ -617,12 +617,8 @@ select:focus {
   gap: 0.65rem;
 }
 
-.signup-panel form > span {
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+.signup-panel form > label {
   margin-top: 0.3rem;
-  text-transform: uppercase;
 }
 
 .signup-panel button {

@@ -109,7 +109,7 @@ export default function EventPage() {
         </Link>
 
         <section className="event-detail">
-          <img src={event.image} alt="" />
+          <img src={event.image} alt={event.title} />
           <div className="event-detail-content">
             <p className="event-category">{event.category}</p>
             <h1>{event.title}</h1>
@@ -158,8 +158,9 @@ export default function EventPage() {
                 Navn
                 <input value={name} onChange={(inputEvent) => setName(inputEvent.target.value)} />
               </label>
-              <span>E-mail</span>
+              <label htmlFor="email">E-mail</label>
               <input
+                id="email"
                 value={email}
                 onChange={(inputEvent) => setEmail(inputEvent.target.value)}
                 placeholder="dig@example.com"
