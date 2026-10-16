@@ -294,11 +294,6 @@ select:focus {
   color: var(--green);
 }
 
-.message {
-  background: var(--cream);
-  padding: 1rem;
-}
-
 .page-header,
 .admin-header {
   background: var(--green);
