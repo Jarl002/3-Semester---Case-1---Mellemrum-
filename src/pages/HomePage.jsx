@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import usePageFocus from "../hooks/usePageFocus";
 import { SUPABASE_URL, headers } from "../lib/api";
+import { withImageWidth } from "../lib/images";
 import Footer from "../components/Footer";
 
 export default function HomePage() {
@@ -117,7 +118,7 @@ export default function HomePage() {
           <section className="event-grid">
             {filteredEvents.map((event) => (
               <article className="event-card" key={event.id}>
-                <img src={event.image} alt={event.title} />
+                <img src={withImageWidth(event.image, 600)} alt={event.title} loading="lazy" />
                 <div className="event-card-content">
                   <p className="event-category">{event.category}</p>
                   <h3>{event.title}</h3>
